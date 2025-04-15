@@ -9,6 +9,8 @@ use std::{
     time::{Duration, Instant, SystemTime},
 };
 
+use std::env;
+
 use anyhow::Result;
 use bytes::Bytes;
 use rand::Rng;
@@ -99,7 +101,10 @@ const CHARS: &[char] = &[
 ];
 
 pub const RENDEZVOUS_SERVERS: &[&str] = &["rd.estably.com"];
-pub const RS_PUB_KEY: &str = "1FChDyGhqP6UpSQ6YdUosa4qCbQUganOjJ9aCFuUbw4=";
+pub fn get_rs_pub_key() -> String {
+    env::var("RS_PUB_KEY").expect("RS_PUB_KEY environment variable is not set")
+}
+//pub const RS_PUB_KEY: &str = "1FChDyGhqP6UpSQ6YdUosa4qCbQUganOjJ9aCFuUbw4=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
@@ -2200,11 +2205,12 @@ fn is_option_can_save(
 
 #[inline]
 pub fn is_incoming_only() -> bool {
-    HARD_SETTINGS
+    env::var("INCOMING").unwrap_or_else(|_| "false".to_string()) == "true"
+   /* HARD_SETTINGS
         .read()
         .unwrap()
         .get("conn-type")
-        .map_or(false, |x| x == ("incoming"))
+        .map_or(false, |x| x == ("incoming"))*/
 }
 
 #[inline]
