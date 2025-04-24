@@ -2205,7 +2205,8 @@ fn is_option_can_save(
 
 #[inline]
 pub fn is_incoming_only() -> bool {
-    env::var("INCOMING").unwrap_or_else(|_| "false".to_string()) == "true"
+   return true; 
+    //env::var("INCOMING").unwrap_or_else(|_| "false".to_string()) == "true"
    /* HARD_SETTINGS
         .read()
         .unwrap()
